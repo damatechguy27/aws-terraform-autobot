@@ -1,3 +1,25 @@
+#######################################
+#
+# PROVIDER VARIABLES 
+#######################################
+variable "provide_region" {
+  type =  string
+  default = "us-west-2"
+}
+
+variable "credentials_path" {
+    type = string
+    default = "C:\\Users\\dmit27\\.aws\\credentials"
+  
+}
+
+variable "provider_aws_version" {
+    type = string
+    default = "5.60.0"
+  
+}
+
+
 ########################################
 # NETWORKING VARIABLES
 #########################################

@@ -1,15 +1,16 @@
+
 resource "aws_vpc" "vpc" {
 
     cidr_block = var.cidr_ip
     enable_dns_hostnames = var.enable_hostnames
-    tags = {Name = "VPC-${var.vpc_names[0]}"}
+    tags = {Name = "${var.vpc_names[0]}-${random_pet.petname.id}"}
   
 }
 
 resource "aws_internet_gateway" "network_gateway" {
 
     vpc_id = aws_vpc.vpc.id
-    tags = {Name = "${var.vpc_names[0]}"}
+    tags = {Name = "${var.vpc_names[0]}-${random_pet.petname.id}"}
   
 }
 
@@ -26,7 +27,7 @@ resource "aws_subnet" "pub-Subnets" {
     map_public_ip_on_launch = var.map_ip_enable
 
     tags = {
-      Name = "${var.vpc_names[0]}-${each.key}"
+      Name = "${var.vpc_names[0]}-${random_pet.petname.id}-${each.key}"
     }
   
 }
@@ -42,7 +43,7 @@ resource "aws_route_table" "publicroute" {
     }
 
     tags = {
-      Name = "${var.vpc_names[0]}-Public-Route"
+      Name = "${var.vpc_names[0]}-${random_pet.petname.id}-Public-Route"
     }
   
 }
@@ -69,7 +70,7 @@ resource "aws_subnet" "priv-Subnets" {
     map_public_ip_on_launch = false
 
     tags = {
-      Name = "${var.vpc_names[0]}-${each.key}"
+      Name = "${var.vpc_names[0]}-${random_pet.petname.id}-${each.key}"
     }
   
 }
@@ -79,7 +80,7 @@ resource "aws_route_table" "privateroute" {
     vpc_id = aws_vpc.vpc.id
 
     tags = {
-      Name = "${var.vpc_names[0]}-Private-Route"
+      Name = "${var.vpc_names[0]}-${random_pet.petname.id}-Private-Route"
     }
   
 }
