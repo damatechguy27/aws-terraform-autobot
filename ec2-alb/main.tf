@@ -1,4 +1,5 @@
 
+
 # Create an EC2 instance
 resource "aws_instance" "web" {
   ami           = "ami-0663b059c6536cac8" # Replace with your desired AMI

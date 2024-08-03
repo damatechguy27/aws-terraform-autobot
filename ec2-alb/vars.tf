@@ -2,7 +2,6 @@
 #
 # PROVIDER VARIABLES 
 #######################################
-
 variable "provide_region" {
   type =  string
   default = "us-west-2"

@@ -1,6 +1,7 @@
 #
 #  EC2 Instances 
 #
+
 resource "aws_security_group" "ec2-security-group" {
     name        = "${random_pet.petname.id}-EC2-SG"
     description = "Allow inbound access to the EC2"
