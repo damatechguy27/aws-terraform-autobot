@@ -45,4 +45,4 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         
       - name: Deploying EC2 and Application Load Balancer
-        run: make plan/ec2alb
+        run: make apply/ec2alb
