@@ -10,15 +10,25 @@ terraform {
       version = "3.6.1"
     }
   }
+  
+  backend "s3" {
+  bucket = "damgitestate"
+  key    = "ec2-alb/terraform.tfstate"
+  region = "us-west-2"
+  }
 }
 # Configure the AWS Provider
 provider "aws" {
-  #  region = var.provide_region
+    #region = var.provide_region
 
     # linux 
     #shared_credentials_files = "~/.aws/credentials"
     #window
-  #  shared_credentials_files = [var.credentials_path]
+    #shared_credentials_files = [var.credentials_path]
     #profile = "default"
+
+}
+
+terraform {
 
 }
