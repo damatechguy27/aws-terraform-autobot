@@ -50,7 +50,4 @@ jobs:
       - name: Deploying EC2 and Application Load Balancer
         run: make apply/ec2alb
 
-      - name: Saving State
-        if: github.ref == 'refs/heads/main'
-        run: |
-          aws s3 cp terraform.tfstate ${{env.bucket}}terraform.tfstate
+
