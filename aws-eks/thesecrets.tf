@@ -5,6 +5,12 @@ terraform {
       version = "5.60.0"
     }
   }
+
+  backend "s3" {
+  bucket = "damgitestate"
+  key    = "eks-test/terraform.tfstate"
+  region = "us-west-2"
+  }
 }
 
 provider "aws" {
