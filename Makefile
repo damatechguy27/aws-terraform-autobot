@@ -20,7 +20,7 @@ destroy/ec2alb:
 PHONY: plan/eks-test
 plan/eks-test: # Planning EKS Deployment
 plan/eks-test: 
-		cd aws-eks && terraform init && terraform init && terraform plan
+		cd aws-eks && terraform init && terraform plan
 
 PHONY: apply/eks-test
 apply/eks-test: # Applying EKS Deployment
