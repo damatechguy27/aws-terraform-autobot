@@ -12,12 +12,12 @@ terraform {
 }
 # Configure the AWS Provider
 provider "aws" {
-    region = "us-west-2"
+    region = var.provide_region
 
     # linux 
     #shared_credentials_files = "~/.aws/credentials"
     #window
-    shared_credentials_files = ["C:\\Users\\dmit27\\.aws\\credentials"]
-    profile = "default"
+    shared_credentials_files = [var.credentials_path]
+    #profile = "default"
 
 }
