@@ -8,7 +8,7 @@ concurrency:
     group: testing
     cancel-in-progress: true
 jobs:
-  Planning:
+  Destroy-EC2-ALB:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,6 +24,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         
-      - name: Initalizing and Planning
+      - name: Removing Infra
         run: make destroy/ec2alb
     
