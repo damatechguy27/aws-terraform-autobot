@@ -1,0 +1,35 @@
+name: Deployment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to:'
+        required: true
+        default: 'Production'
+        type: choice
+        options:
+          - Production
+          - Staging
+          - Development
+          - Testing
+
+concurrency:
+  group: testing
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check Branch for Production
+        if: ${{ github.event.inputs.environment == 'Production' && github.ref != 'refs/heads/main' }}
+        run: |
+          echo "Deployment to Production is only allowed from the main branch."
+          exit 1
+
+      - name: Deploy
+        run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
