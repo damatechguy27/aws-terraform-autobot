@@ -2,22 +2,29 @@
 #
 # PROVIDER VARIABLES 
 #######################################
-variable "provide_region" {
-  type =  string
-  default = "us-west-2"
-}
+# variable "provide_region" {
+#   type =  string
+#   default = "us-west-2"
+# }
 
-variable "credentials_path" {
-    type = string
-    default = "C:\\Users\\dmit27\\.aws\\credentials"
+# variable "credentials_path" {
+#     type = string
+#     default = "C:\\Users\\dmit27\\.aws\\credentials"
   
-}
+# }
 
-variable "provider_aws_version" {
-    type = string
-    default = "5.60.0"
-  
-}
+# variable "aws_access_key" {
+#   type = string
+# }
+
+# variable "aws_sec_key" {
+#   type = string  
+# }
+
+# variable "aws_profile" {
+#   type = string
+# }
+
 
 
 ########################################
