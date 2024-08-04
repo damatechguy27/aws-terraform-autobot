@@ -63,8 +63,4 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         
       - name: Removing Infra
-        run: make destroy/ecr
-
-        
-    
-      
+        run: make destroy/ecr 

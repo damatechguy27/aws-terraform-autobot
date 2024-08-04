@@ -41,5 +41,4 @@ jobs:
 
     - name: Print image details
       run: |
-        make printimagedetails
-        
+        make printimagedetails      
