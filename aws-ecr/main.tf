@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "my_repo" {
-  name                 =  "${var.vpc_names[0]}-myjsapp-repo"
+  name                 =  "${random_pet.petname.id}-myjsapp-repo"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
