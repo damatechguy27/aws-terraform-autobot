@@ -36,9 +36,10 @@ jobs:
       env:
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        make build
-        make push
+        cd myjsapp/
+        docker build -t ${{ env.ECR_REPO_URL }}:$IMAGE_TAG .
+        docker push ${{ env.ECR_REPO_URL }}:$IMAGE_TAG
 
     - name: Print image details
       run: |
-        make printimagedetails
+        echo "Image pushed to: ${{ env.ECR_REPO_URL }}:$IMAGE_TAG"
