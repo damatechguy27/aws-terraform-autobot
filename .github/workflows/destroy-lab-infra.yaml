@@ -1,4 +1,4 @@
-name: Destroy EC2 and ALB
+name: Destroy Lab Infra
 on:
   workflow_dispatch:
 
@@ -8,7 +8,7 @@ concurrency:
     group: testing
     cancel-in-progress: true
 jobs:
-  Planning:
+  Destroy-EC2-ALB:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,6 +24,45 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         
-      - name: Initalizing and Planning
+      - name: Removing Infra
         run: make destroy/ec2alb
     
+  Destroy-EKS:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2  # Replace with your region
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Removing Infra
+        run: make destroy/eks
+
+  Destroy-ECR:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2  # Replace with your region
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Removing Infra
+        run: make destroy/ecr
+    
+      
