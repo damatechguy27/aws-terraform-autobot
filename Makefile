@@ -18,18 +18,18 @@ destroy/ec2alb:
 
 # EKS Deployment
 PHONY: plan/eks
-plan/eks-test: # Planning EKS Deployment
-plan/eks-test: 
+plan/eks: # Planning EKS Deployment
+plan/eks: 
 		cd aws-eks && terraform init && terraform plan
 
 PHONY: apply/eks
-apply/eks-test: # Applying EKS Deployment
-apply/eks-test: 
+apply/eks: # Applying EKS Deployment
+apply/eks: 
 		cd aws-eks && terraform init && terraform apply --auto-approve
 
 PHONY: destroy/eks
-destroy/eks-test: # Destroying EKS Deployment
-destroy/eks-test: 
+destroy/eks: # Destroying EKS Deployment
+destroy/eks: 
 		cd aws-eks && terraform init && terraform destroy --auto-approve
 
 # ECR Deployment 
