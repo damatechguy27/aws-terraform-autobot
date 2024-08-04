@@ -17,17 +17,50 @@ destroy/ec2alb:
 
 
 # EKS Deployment
-PHONY: plan/eks-test
+PHONY: plan/eks
 plan/eks-test: # Planning EKS Deployment
 plan/eks-test: 
 		cd aws-eks && terraform init && terraform plan
 
-PHONY: apply/eks-test
+PHONY: apply/eks
 apply/eks-test: # Applying EKS Deployment
 apply/eks-test: 
 		cd aws-eks && terraform init && terraform apply --auto-approve
 
-PHONY: destroy/eks-test
+PHONY: destroy/eks
 destroy/eks-test: # Destroying EKS Deployment
 destroy/eks-test: 
 		cd aws-eks && terraform init && terraform destroy --auto-approve
+
+# ECR Deployment 
+PHONY: plan/ecr
+plan/ecr: # Planning EKS Deployment
+plan/ecr: 
+		cd aws-ecr && terraform init && terraform plan
+
+PHONY: apply/ecr
+apply/ecr: # Applying EKS Deployment
+apply/ecr: 
+		cd aws-ecr && terraform init && terraform apply --auto-approve
+
+PHONY: destroy/ecr
+destroy/ecr: # Destroying EKS Deployment
+destroy/ecr: 
+		cd aws-ecr && terraform init && terraform destroy --auto-approve
+
+# Build Docker Image
+
+PHONY: build
+build: # Build Image
+build: 
+		cd myjsapp && docker build -t ${{ env.ECR_REPO_URL }}:$IMAGE_TAG .
+
+PHONY: push
+push: # Push Docker Image
+push: 
+		docker push ${{ env.ECR_REPO_URL }}:$IMAGE_TAG
+
+PHONY: printimagedetails
+printimagedetails: # Print Docker Image Details
+printimagedetails: 
+		echo "Image pushed to: ${{ env.ECR_REPO_URL }}:$IMAGE_TAG"

@@ -29,9 +29,6 @@ jobs:
     
   Deploying:
     runs-on: ubuntu-latest
-    env:
-      bucket: ${{ secrets.BUCKET_EC2ALB }}
-
     needs: Planning
     steps:
       - name: Checkout
@@ -53,4 +50,4 @@ jobs:
       - name: Saving State
         if: github.ref == 'refs/heads/main'
         run: |
-          aws s3 cp terraform.tfstate ${{env.bucket}}terraform.tfstate
+          aws s3 cp terraform.tfstate s3://damgitestate/ec2-alb/terraform.tfstate
