@@ -51,3 +51,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           aws s3 cp terraform.tfstate s3://damgitestate/ec2-alb/terraform.tfstate
+          

@@ -21,5 +21,4 @@ provider "aws" {
     #window
 #    shared_credentials_files = [var.credentials_path]
     #profile = "default"
-
 }

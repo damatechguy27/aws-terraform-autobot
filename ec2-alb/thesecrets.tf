@@ -29,6 +29,3 @@ provider "aws" {
 
 }
 
-terraform {
-
-}
