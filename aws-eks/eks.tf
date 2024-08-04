@@ -30,9 +30,9 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 
 # EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
-  name     = "${var.vpc_names[0]}-${random_pet.petname.id}-EKS-Cluster"
+  name     = "${var.vpc_names[0]}-${random_pet.petname.id}-EKS-LAB-Cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
-  version  = "1.23"
+  version  = "1.28"
 
   vpc_config {
     subnet_ids = [aws_subnet.pub-Subnets["pub_subnet1"].id , aws_subnet.pub-Subnets["pub_subnet2"].id]

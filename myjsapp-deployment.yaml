@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myjsapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myjsapp
+  template:
+    metadata:
+      labels:
+        app: myjsapp
+    spec:
+      containers:
+      - name: myjsapp
+        image: ${ECR_REPO_URL}:${IMAGE_TAG} # image in ACR
+        resources: {}# include resources for better scheduling
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myjsapp
+spec:
+  ports:
+  - port: 80 # Access on service port 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: myjsapp
+  type: LoadBalancer # External Access via load balancer service

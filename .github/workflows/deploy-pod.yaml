@@ -1,0 +1,63 @@
+name: Deploy Pods to EKS
+
+on:
+    workflow_dispatch:
+
+# concurrency make sure only 1 job and be ran at a time
+concurrency:
+    group: testing
+    cancel-in-progress: true
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+        aws-region: us-west-2  # Replace with your AWS region
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Get ECR repo URL
+      run: |
+        ECR_REPO_URL=$(aws ecr describe-repositories --query "repositories[?contains(repositoryName, 'myjsapp')].repositoryUri" --output text)
+        echo "ECR_REPO_URL=$ECR_REPO_URL" >> $GITHUB_ENV
+
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v4
+      with:
+        version: 'v1.28.0'  # Replace with your desired kubectl version
+
+    - name: Update kubeconfig
+      run: |
+        aws eks list-clusters --query "clusters[?contains(@, 'eks-lab')]" --output text > cluster_name.txt
+        CLUSTER_NAME=$(cat cluster_name.txt)
+        aws eks get-token --cluster-name $CLUSTER_NAME | kubectl apply -f -
+
+    - name: Deploy to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: latest
+      run: |
+        # Replace placeholders in your Kubernetes YAML files
+        sed -i 's|{{ECR_REPO_URL}}|'${ECR_REPO_URL}'|g' myjsapp-deployment.yaml
+        sed -i 's|latest|'${IMAGE_TAG}'|g' myjsapp-deployment.yaml
+        
+        # Apply Kubernetes manifests
+        kubectl apply -f myjsapp-deployment.yaml
+#        kubectl apply -f k8s-service.yaml
+
+    - name: Verify deployment
+      run: |
+        kubectl get pods
+        kubectl get services
