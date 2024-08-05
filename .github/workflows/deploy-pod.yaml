@@ -49,15 +49,8 @@ jobs:
     - name: Update kubeconfig
       if: steps.find-cluster.outputs.cluster_name != ''
       run: |
-          aws eks update-kubeconfig --name ${{ steps.find-cluster.outputs.cluster_name }} --region ${{ secrets.AWS_REGION }}
-      env:
-          KUBECONFIG: ${{ github.workspace }}/kubeconfig
-
-    - name: Upload kubeconfig
-      uses: actions/upload-artifact@v2
-      with:
-           name: kubeconfig
-           path: ${{ github.workspace }}/kubeconfig
+          aws eks update-kubeconfig --name ${{ steps.find-cluster.outputs.cluster_name }} --region us-west-2
+      
 
     - name: Deploy to EKS
       env:
