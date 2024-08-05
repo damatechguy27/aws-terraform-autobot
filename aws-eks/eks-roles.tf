@@ -60,7 +60,7 @@ resource "aws_iam_role_policy_attachment" "ecr_read_only" {
 }
 
 # User IAMRole 
-
+/*
 resource "aws_iam_role" "eks_admin_role" {
   name = "eks-admin-role"
 
@@ -77,3 +77,4 @@ resource "aws_iam_role" "eks_admin_role" {
     ]
   })
 }
+*/
