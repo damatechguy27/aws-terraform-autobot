@@ -28,6 +28,11 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_cluster_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSVPCResourceController" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+  role       = aws_iam_role.eks_cluster_role.name
+}
+
 # EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "${var.vpc_names[0]}-${random_pet.petname.id}-EKS-LAB-Cluster"
@@ -45,6 +50,23 @@ resource "aws_eks_cluster" "eks_cluster" {
       aws_security_group.eks-security-group
       ]
 }
+
+# Adding EKS add ons for cluster 
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name = aws_eks_cluster.eks_cluster.name
+  addon_name   = "vpc-cni"
+}
+
+resource "aws_eks_addon" "kube_proxy" {
+  cluster_name = aws_eks_cluster.eks_cluster.name
+  addon_name   = "kube-proxy"
+}
+
+resource "aws_eks_addon" "coredns" {
+  cluster_name = aws_eks_cluster.eks_cluster.name
+  addon_name   = "coredns"
+}
+
 
 # IAM Role for EKS Node Group
 resource "aws_iam_role" "eks_node_group_role" {
@@ -188,8 +210,9 @@ resource "kubernetes_service" "apache" {
     type = "LoadBalancer"
   }
 }
-*/
+
 # Output the Load Balancer URL
 output "load_balancer_url" {
   value = kubernetes_service.apache.status.0.load_balancer.0.ingress.0.hostname
 }
+*/
