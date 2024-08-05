@@ -118,6 +118,7 @@ provider "kubernetes" {
     command     = "aws"
   }
 }
+
 /*
 # Apache Deployment
 resource "kubernetes_deployment" "apache" {
