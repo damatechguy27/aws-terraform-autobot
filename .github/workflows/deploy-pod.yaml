@@ -27,6 +27,12 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: Install kubectl
+      run: |
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin/kubectl
+
     - name: Get ECR repo URL
       run: |
         ECR_REPO_URL=$(aws ecr describe-repositories --query "repositories[?contains(repositoryName, 'myjsapp')].repositoryUri" --output text)
@@ -44,12 +50,6 @@ jobs:
           --docker-username=AWS \
           --docker-password=$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }}) \
           --docker-email=none
-
-    - name: Install kubectl
-      run: |
-        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x ./kubectl
-        sudo mv ./kubectl /usr/local/bin/kubectl
 
     - name: Find EKS Cluster
       id: find-cluster
