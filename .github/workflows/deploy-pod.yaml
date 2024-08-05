@@ -33,6 +33,24 @@ jobs:
         chmod +x ./kubectl
         sudo mv ./kubectl /usr/local/bin/kubectl
 
+        curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/latest/download/aws-iam-authenticator_$(uname -s)_$(uname -m)
+        chmod +x ./aws-iam-authenticator
+        sudo mv ./aws-iam-authenticator /usr/local/bin/
+
+    - name: Find EKS Cluster
+      id: find-cluster
+      run: |
+          CLUSTER_NAME=$(aws eks list-clusters --region us-west-2 --query "clusters[?contains(@, 'EKS-LAB')]" --output text)
+          echo "Cluster found: $CLUSTER_NAME"
+          echo "::set-output name=cluster_name::$CLUSTER_NAME"
+          aws eks get-token --cluster-name $CLUSTER_NAME 
+  
+    - name: Update kubeconfig
+      if: steps.find-cluster.outputs.cluster_name != ''
+      run: |
+            aws eks update-kubeconfig --name ${{ steps.find-cluster.outputs.cluster_name }} --region us-west-2
+  
+
     - name: Get ECR repo URL
       run: |
         ECR_REPO_URL=$(aws ecr describe-repositories --query "repositories[?contains(repositoryName, 'myjsapp')].repositoryUri" --output text)
@@ -49,21 +67,7 @@ jobs:
           --docker-server=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com \
           --docker-username=AWS \
           --docker-password=$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }}) \
-          --docker-email=none
-
-    - name: Find EKS Cluster
-      id: find-cluster
-      run: |
-        CLUSTER_NAME=$(aws eks list-clusters --region us-west-2 --query "clusters[?contains(@, 'EKS-LAB')]" --output text)
-        echo "Cluster found: $CLUSTER_NAME"
-        echo "::set-output name=cluster_name::$CLUSTER_NAME"
-        aws eks get-token --cluster-name $CLUSTER_NAME 
-
-    - name: Update kubeconfig
-      if: steps.find-cluster.outputs.cluster_name != ''
-      run: |
-          aws eks update-kubeconfig --name ${{ steps.find-cluster.outputs.cluster_name }} --region us-west-2
-      
+          --docker-email=none      
 
     - name: Deploy to EKS
       env:
