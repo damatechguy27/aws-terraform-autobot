@@ -42,7 +42,7 @@ jobs:
     - name: Find EKS Cluster
       id: find-cluster
       run: |
-        CLUSTER_NAME=$(aws eks list-clusters --query "clusters[?contains(@, 'EKS-LAB')]" --output text)
+        CLUSTER_NAME=$(aws eks list-clusters --region us-west-2 --query "clusters[?contains(@, 'EKS-LAB')]" --output text)
         echo "Cluster found: $CLUSTER_NAME"
         echo "::set-output name=cluster_name::$CLUSTER_NAME"
 
