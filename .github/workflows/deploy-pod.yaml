@@ -62,7 +62,7 @@ jobs:
         sed -i 's|latest|'${IMAGE_TAG}'|g' myjsapp-deployment.yaml
         
         # Apply Kubernetes manifests
-        kubectl apply -f myjsapp-deployment.yaml
+        kubectl apply -f myjsapp-deployment.yaml --validate=false
 #        kubectl apply -f k8s-service.yaml
 
     - name: Verify deployment

@@ -41,6 +41,10 @@ resource "aws_eks_addon" "coredns" {
   addon_name   = "coredns"
 }
 
+resource "aws_eks_addon" "pod_identity" {
+  cluster_name = aws_eks_cluster.eks_cluster.name
+  addon_name   = "aws-load-balancer-controller"
+}
 
 
 # EKS Node Group
@@ -81,6 +85,7 @@ provider "kubernetes" {
     args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.eks_cluster.name]
     command     = "aws"
   }
+  #token = data.aws_eks_cluster_auth.eks_cluster.token
 }
 
 /*
