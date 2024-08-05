@@ -45,7 +45,7 @@ jobs:
         CLUSTER_NAME=$(aws eks list-clusters --region us-west-2 --query "clusters[?contains(@, 'EKS-LAB')]" --output text)
         echo "Cluster found: $CLUSTER_NAME"
         echo "::set-output name=cluster_name::$CLUSTER_NAME"
-        aws eks get-token --cluster-name $CLUSTER_NAME | kubectl apply -f -
+        aws eks get-token --cluster-name $CLUSTER_NAME 
 
     - name: Update kubeconfig
       if: steps.find-cluster.outputs.cluster_name != ''
