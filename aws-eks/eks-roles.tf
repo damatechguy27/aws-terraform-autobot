@@ -58,9 +58,9 @@ resource "aws_iam_role_policy_attachment" "ecr_read_only" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.eks_node_group_role.name
 }
-
-# User IAMRole 
 /*
+# User IAMRole 
+
 resource "aws_iam_role" "eks_admin_role" {
   name = "eks-admin-role"
 
@@ -76,5 +76,10 @@ resource "aws_iam_role" "eks_admin_role" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_admin_AmazonEKSClusterAdminPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterAdminPolicy"
+  role       = aws_iam_role.eks_admin_role.name
 }
 */
