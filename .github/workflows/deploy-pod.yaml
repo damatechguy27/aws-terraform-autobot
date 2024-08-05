@@ -32,6 +32,18 @@ jobs:
         ECR_REPO_URL=$(aws ecr describe-repositories --query "repositories[?contains(repositoryName, 'myjsapp')].repositoryUri" --output text)
         echo "ECR_REPO_URL=$ECR_REPO_URL" >> $GITHUB_ENV
 
+    - name: Authenticate Docker to ECR
+      id: ecr-login
+      run: |
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+    - name: Create Kubernetes secret for ECR
+      run: |
+        kubectl create secret docker-registry ecr-secret \
+          --docker-server=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com \
+          --docker-username=AWS \
+          --docker-password=$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }}) \
+          --docker-email=none
 
     - name: Install kubectl
       run: |
