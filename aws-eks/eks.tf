@@ -118,7 +118,7 @@ provider "kubernetes" {
     command     = "aws"
   }
 }
-
+/*
 # Apache Deployment
 resource "kubernetes_deployment" "apache" {
   depends_on = [time_sleep.wait_for_kubernetes]
@@ -187,7 +187,7 @@ resource "kubernetes_service" "apache" {
     type = "LoadBalancer"
   }
 }
-
+*/
 # Output the Load Balancer URL
 output "load_balancer_url" {
   value = kubernetes_service.apache.status.0.load_balancer.0.ingress.0.hostname
