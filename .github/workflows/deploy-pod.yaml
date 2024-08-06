@@ -61,13 +61,7 @@ jobs:
       run: |
         aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-    - name: Create Kubernetes secret for ECR
-      run: |
-        kubectl create secret docker-registry ecr-secret \
-          --docker-server=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com \
-          --docker-username=AWS \
-          --docker-password=$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }}) \
-          --docker-email=none      
+     
 
     - name: Deploy to EKS
       env:
