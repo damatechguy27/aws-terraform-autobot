@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: myjsapp
-        image: ${ECR_REPO_URL}:${IMAGE_TAG} # image in ACR
+        image: ECR_REPO_URI:IMAGE_TAG # image in ACR
         resources: {}# include resources for better scheduling
         ports:
         - containerPort: 80

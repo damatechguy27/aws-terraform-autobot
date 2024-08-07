@@ -54,7 +54,7 @@ jobs:
     - name: Get ECR repo URL
       run: |
         ECR_REPO_URL=$(aws ecr describe-repositories --query "repositories[?contains(repositoryName, 'myjsapp')].repositoryUri" --output text)
-        echo "ECR_REPO_URL=$ECR_REPO_URL" >> $GITHUB_ENV
+        echo $ECR_REPO_URL >> $GITHUB_ENV
 
     - name: Authenticate Docker to ECR
       id: ecr-login
@@ -69,9 +69,7 @@ jobs:
         IMAGE_TAG: latest
       run: |
         # Replace placeholders in your Kubernetes YAML files
-        sed -i 's|{{ECR_REPO_URL}}|'${ECR_REPO_URL}'|g' myjsapp-deployment.yaml
-        sed -i 's|latest|'${IMAGE_TAG}'|g' myjsapp-deployment.yaml
-        
+        sed -i "s|ECR_REPO_URI:IMAGE_TAG|$ECR_REPO_URI:latest|g" myjsapp-deployment.yaml
         # Apply Kubernetes manifests
         kubectl apply -f myjsapp-deployment.yaml
 #        kubectl apply -f k8s-service.yaml
