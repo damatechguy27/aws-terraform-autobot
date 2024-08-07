@@ -54,7 +54,7 @@ jobs:
     - name: Get ECR repo URL
       run: |
         ECR_REPO_URL=$(aws ecr describe-repositories --query "repositories[?contains(repositoryName, 'myjsapp')].repositoryUri" --output text)
-        echo $ECR_REPO_URL >> $GITHUB_ENV
+        echo "ECR_REPO_URL=$ECR_REPO_URL" >> $GITHUB_ENV
 
     - name: Authenticate Docker to ECR
       id: ecr-login
