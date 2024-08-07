@@ -14,12 +14,12 @@ terraform {
 }
 
 provider "aws" {
-#    region = var.provide_region
+    #region = var.provide_region
 
     # linux 
     #shared_credentials_files = "~/.aws/credentials"
     #window
-#    shared_credentials_files = [var.credentials_path]
+    #shared_credentials_files = [var.credentials_path]
     #profile = "default"
 
 }

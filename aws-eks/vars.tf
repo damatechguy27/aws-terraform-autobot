@@ -2,16 +2,16 @@
 #
 # PROVIDER VARIABLES 
 #######################################
-variable "provide_region" {
-  type =  string
-  default = "us-west-2"
-}
+# variable "provide_region" {
+#   type =  string
+#   default = "us-west-2"
+# }
 
-variable "credentials_path" {
-    type = string
-    default = "C:\\Users\\dmit27\\.aws\\credentials"
+# variable "credentials_path" {
+#     type = string
+#     default = "C:\\Users\\dmit27\\.aws\\credentials"
   
-}
+# }
 
 # variable "aws_access_key" {
 #   type = string

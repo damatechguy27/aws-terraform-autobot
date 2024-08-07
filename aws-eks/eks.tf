@@ -6,6 +6,7 @@
 
 
 
+
 # EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "${var.vpc_names[0]}-${random_pet.petname.id}-EKS-LAB-Cluster"
@@ -16,6 +17,13 @@ resource "aws_eks_cluster" "eks_cluster" {
     subnet_ids = [aws_subnet.pub-Subnets["pub_subnet1"].id , aws_subnet.pub-Subnets["pub_subnet2"].id]
     security_group_ids = [aws_security_group.eks-security-group.id]
   }
+
+  access_config {
+    authentication_mode = "API_AND_CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = true
+  }
+
+  bootstrap_self_managed_addons = true
 
   depends_on = [
       aws_iam_role_policy_attachment.eks_cluster_policy,
@@ -40,12 +48,12 @@ resource "aws_eks_addon" "coredns" {
   cluster_name = aws_eks_cluster.eks_cluster.name
   addon_name   = "coredns"
 }
-
+/*
 resource "aws_eks_addon" "pod_identity" {
   cluster_name = aws_eks_cluster.eks_cluster.name
   addon_name   = "aws-load-balancer-controller"
 }
-
+*/
 
 # EKS Node Group
 resource "aws_eks_node_group" "eks_node_group" {
@@ -77,6 +85,7 @@ resource "time_sleep" "wait_for_kubernetes" {
 }
 
 # Kubernetes provider
+
 provider "kubernetes" {
   host                   = aws_eks_cluster.eks_cluster.endpoint
   cluster_ca_certificate = base64decode(aws_eks_cluster.eks_cluster.certificate_authority[0].data)

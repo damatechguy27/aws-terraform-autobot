@@ -75,7 +75,7 @@ resource "aws_iam_role" "platformadmin_role" {
     ]
   })
 }
-*/
+
 resource "aws_iam_role_policy_attachment" "platformadmin_AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.platformadmin_role.name
@@ -85,6 +85,7 @@ resource "aws_iam_role_policy_attachment" "platformadmin_AmazonEC2ContainerRegis
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.platformadmin_role.name
 }
+*/
 /*
 # User IAMRole 
 resource "aws_iam_role" "eks_admin_role" {
