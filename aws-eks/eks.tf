@@ -28,7 +28,7 @@ resource "aws_eks_cluster" "eks_cluster" {
   depends_on = [
       aws_iam_role_policy_attachment.eks_cluster_policy,
       aws_iam_role_policy_attachment.eks_cluster_AmazonEKSVPCResourceController,
-      aws_iam_role_policy_attachment.eks_worker_node_policy,
+      aws_iam_role_policy_attachment.eks_worker_node_policy1,
       aws_vpc.vpc,
       aws_security_group.eks-security-group
       ]
@@ -71,7 +71,7 @@ resource "aws_eks_node_group" "eks_node_group" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.eks_worker_node_policy,
+    aws_iam_role_policy_attachment.eks_worker_node_policy2,
     aws_iam_role_policy_attachment.eks_cni_policy,
     aws_iam_role_policy_attachment.ecr_read_only,
     aws_vpc.vpc,
