@@ -1,0 +1,50 @@
+name: Deploy ECS Environment
+on:
+  workflow_dispatch:
+
+
+# concurrency make sure only 1 job and be ran at a time
+concurrency:
+    group: testing
+    cancel-in-progress: true
+jobs:
+  Planning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2  # Replace with your region
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Initalizing and Planning
+        run: make plan/ecs
+    
+  Deploying:
+    runs-on: ubuntu-latest
+    needs: Planning
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2  # Replace with your region
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Deploying ECS
+        run: make apply/ecs
+
+     
