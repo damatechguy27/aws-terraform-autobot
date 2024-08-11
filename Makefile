@@ -34,17 +34,17 @@ destroy/eks:
 
 # ECR Deployment 
 PHONY: plan/ecr
-plan/ecr: # Planning EKS Deployment
+plan/ecr: # Planning ECR Deployment
 plan/ecr: 
 		cd aws-ecr && terraform init && terraform plan
 
 PHONY: apply/ecr
-apply/ecr: # Applying EKS Deployment
+apply/ecr: # Applying ECR Deployment
 apply/ecr: 
 		cd aws-ecr && terraform init && terraform apply --auto-approve
 
 PHONY: destroy/ecr
-destroy/ecr: # Destroying EKS Deployment
+destroy/ecr: # Destroying ECR Deployment
 destroy/ecr: 
 		cd aws-ecr && terraform init && terraform destroy --auto-approve
 
@@ -83,3 +83,5 @@ PHONY: printimagedetails
 printimagedetails: # Print Docker Image Details
 printimagedetails: 
 		echo "Image pushed to: ${{ env.ECR_REPO_URL }}:$IMAGE_TAG"
+
+
