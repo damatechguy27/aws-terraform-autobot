@@ -48,6 +48,25 @@ destroy/ecr: # Destroying EKS Deployment
 destroy/ecr: 
 		cd aws-ecr && terraform init && terraform destroy --auto-approve
 
+
+# EcS Deployment
+PHONY: plan/ecs
+plan/ecs: # Planning EKS Deployment
+plan/ecs: 
+		cd aws-ecs && terraform init && terraform plan
+
+PHONY: apply/ecs
+apply/ecs: # Applying EKS Deployment
+apply/ecs: 
+		cd aws-ecs && terraform init && terraform apply --auto-approve
+
+PHONY: destroy/ecs
+destroy/ecs: # Destroying EKS Deployment
+destroy/ecs: 
+		cd aws-ecs && terraform init && terraform destroy --auto-approve
+
+
+
 # Build Docker Image
 
 PHONY: build
